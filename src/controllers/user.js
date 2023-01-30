@@ -1,12 +1,17 @@
 const User = require('../models/user')
 
 const getUsersList = async () => {
-    const users = await User.find()
-    return users
+    const user = await User.find()
+    return user
 }
 
 const getUserById = async (id) => {
     const user = await User.findById(id)
+    return user
+}
+
+const getUserByEmail = async (email) => {
+    const user = await User.findOne({ email })
     return user
 }
 
@@ -31,6 +36,7 @@ const removeUser = async (id) => {
 module.exports = {
     getUsersList,
     getUserById,
+    getUserByEmail,
     createUser,
     updateUser,
     removeUser

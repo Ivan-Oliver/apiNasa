@@ -10,11 +10,11 @@ router.get('/', async (request, response) => {
     }
 })
 
-router.get('/id', async (request, response) => {
+router.get('/:id', async (request, response) => {
     try {
         const { id } = request.params
         const user = await getUserById(id)
-
+        response.status(200).json(user)
     } catch (error) {
         response.status(500)
     }
@@ -26,7 +26,21 @@ router.post('/', async (request, response) => {
         const user = await createUser(data)
         response.status(200).json(user)
     } catch (error) {
-        response.status(500).json('User creation failed')
+        response.status(500).json(error)
+    }
+})
+
+router.post('/toggle/datas/idNasa', async (request, response) => {
+    try {
+        const {idNasa} = request.params
+        console.log(data)
+        const user = await toggleNasaToFavorite({
+            idNasa: request.user.id,
+            idNasa
+        })
+        response.status(200).json(user)
+    } catch (error) {
+        response.status(500).json('Favorite creation failed')
     }
 })
 

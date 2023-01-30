@@ -9,9 +9,6 @@ const dataSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    camera: {
-        name: String,
-    },
     img_src: {
         type: String,
 

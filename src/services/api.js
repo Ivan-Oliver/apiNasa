@@ -1,10 +1,20 @@
+const mongoose = require('mongoose');
+
+mongoose.set('strictQuery', true)
+
+mongoose.connect('mongodb://localhost:27017/task_db', { useNewUrlParser: true });
+
+const Data = require('../models/nasa')
 
 async function getApi() {
     try {
         console.log('EJECUTANDO GET API')
+
         const response = await fetch('https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?sol=1000&api_key=q5Zpr0joiCIaTP1fTatAGhlXDQuFlTAEItFN3bV8')
         const roversList = await response.json()
+
         const roverPhoto = roversList.photos
+
         const newList = roverPhoto.map(rover => (
             {
                 idNasa: rover.id,
@@ -12,6 +22,7 @@ async function getApi() {
                 img_src: rover.img_src,
                 earth_date: rover.earth_date
             }));
+
         //Probamos aquí el código para controlar documentos duplicados
         const itemsToCreate = [];
         const existedItems = await Data.find();
@@ -25,6 +36,7 @@ async function getApi() {
             await Data.insertMany(itemsToCreate);
             console.log('DATOS GUARDADOS EN LA BASE DE DATOS');
         }
+        
         //return [...existedItems, ...itemsToCreate]
         return existedItems.concat(itemsToCreate);
     } catch (error) {
@@ -32,5 +44,5 @@ async function getApi() {
     }
 }
 
-
+module.exports = getApi;
 
